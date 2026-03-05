@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .container {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        /* Button styling */
+        .button {
+            background-color: #4CAF50;
+            color: white !important;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .token {
+            font-size: 24px;
+            letter-spacing: 5px;
+            color: #333;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Assalam-o-Alaikum, {{username}}!</h1>
+            <p>Apka account create ho gaya hai. Verify karne ke liye neeche diye gaye button par click karein:</p>
+
+            <a href="http://localhost:5173/verify?token={{token}}" class="button">
+                Verify Email
+            </a>
+
+            <p>Ye code sirf 10 minutes ke liye valid hai.</p>
+            <hr>
+            <p style="font-size: 12px; color: #888;">Agar aapne ye request nahi ki, toh is email ko ignore karein.</p>
+        </div>
+    </div>
+</body>
+
+</html>
