@@ -6,7 +6,7 @@ export const registerApi = (data) =>
 export const verifyEmailApi = (token,email) =>
   axiosInstance.post('/api/user/verify', { token,email })
 
-export const loginApi = (data) =>cd 
+export const loginApi = (data) =>
   axiosInstance.post('/api/user/login', data)
 
 export const logoutApi = () =>
