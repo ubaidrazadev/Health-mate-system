@@ -3,10 +3,10 @@ import axiosInstance from './axiosInstance'
 export const registerApi = (data) =>
   axiosInstance.post('/api/user/register', data)
 
-export const verifyEmailApi = (token) =>
-  axiosInstance.post('/api/user/verify', { token })
+export const verifyEmailApi = (token,email) =>
+  axiosInstance.post('/api/user/verify', { token,email })
 
-export const loginApi = (data) =>
+export const loginApi = (data) =>cd 
   axiosInstance.post('/api/user/login', data)
 
 export const logoutApi = () =>

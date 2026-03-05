@@ -7,6 +7,7 @@ import AuthLayout from '../components/shared/AuthLayout'
 const VerifyEmailPage = () => {
   const [searchParams] = useSearchParams()
   const token = searchParams.get('token')
+  const email = searchParams.get('email')
   const [status, setStatus] = useState('loading')
   const [message, setMessage] = useState('')
 
@@ -16,7 +17,7 @@ const VerifyEmailPage = () => {
       setMessage('Token nahi mila')
       return
     }
-    verifyEmailApi(token)
+    verifyEmailApi(token,email)
       .then(() => {
         setStatus('success')
         setMessage('Email verify ho gayi! Ab login karo.')
