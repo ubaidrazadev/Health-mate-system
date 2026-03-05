@@ -30,6 +30,7 @@ export const registerUser = async (req, res) => {
             password: hasedPassword
         })
 
+
         const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '10m' })
 
         verifyMail(token, email, username)
@@ -53,61 +54,70 @@ export const registerUser = async (req, res) => {
 
 export const verification = async (req, res) => {
     try {
-        const token = req.body.token;
+        const { token, email } = req.body;
 
-        if (!token) {
-            return res.status(401).json({
-                success: false,
-                message: 'Authorization token is missing or invalid'
-            })
-        }
-
-        let decoded;
-        try {
-            decoded = jwt.verify(token, process.env.JWT_SECRET)
-        } catch (err) {
-            if (err.name == "TokenExpiredError") {
-                return res.status(400).json({
-                    success: false,
-                    message: 'The registration token has expired'
-                })
-            }
+        if (!token && !email) {
             return res.status(400).json({
                 success: false,
-                message: "Token verification failed"
-            })
+                message: "Token or email is required"
+            });
         }
 
-        const userId=decoded?.id?decoded.id.trim():undefined;
+        let user;
 
-        if(!userId){
-         return res.status(404).json({
-                success: false,
-                message: "User not found"
-            }) 
+        // ===== TOKEN VERIFY =====
+        if (token) {
+            try {
+                const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+                if (decoded?.id) {
+                    user = await User.findById(decoded.id);
+                }
+
+            } catch (err) {
+
+                if (err.name === "TokenExpiredError") {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Verification token expired"
+                    });
+                }
+
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid verification token"
+                });
+            }
         }
-        
-        const user = await User.findById(decoded.id)
+
+        // ===== EMAIL FALLBACK =====
+        if (!user && email) {
+            user = await User.findOne({ email });
+        }
+
         if (!user) {
             return res.status(404).json({
                 success: false,
                 message: "User not found"
-            })
+            });
         }
 
-        user.token = null
-        user.isVerified = true
-        await user.save()
+        // ===== VERIFY USER =====
+        user.isVerified = true;
+        user.token = null;
+
+        await user.save();
 
         return res.status(200).json({
             success: true,
-            message: 'Email verified successfully'
-        })
+            message: "Email verified successfully"
+        });
+
     } catch (error) {
         return res.status(500).json({
             success: false,
             message: error.message
-        })
+        });
     }
 };
 
