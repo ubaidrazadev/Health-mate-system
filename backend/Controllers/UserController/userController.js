@@ -77,6 +77,16 @@ export const verification = async (req, res) => {
                 message: "Token verification failed"
             })
         }
+
+        const userId=decoded?.id?decoded.id.trim():undefined;
+
+        if(!userId){
+         return res.status(404).json({
+                success: false,
+                message: "User not found"
+            }) 
+        }
+        
         const user = await User.findById(decoded.id)
         if (!user) {
             return res.status(404).json({
