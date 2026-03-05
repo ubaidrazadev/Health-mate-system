@@ -13,7 +13,12 @@ app.use(express.json());
 
 app.use('/api/user', userRoutes);
 app.use('/api/reports', router)
-
+app.get("/health",(req,res)=>{
+    res.send("backend is running")
+})
+app.get("/",(req,res)=>{
+    res.send("backend is running")
+})
 const PORT = process.env.PORT
 
 connectDB().then(() => {
